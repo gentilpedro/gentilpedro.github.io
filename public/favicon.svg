@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Pedro Gentil">
+  <!-- Letra em vetor (Inter 800, a mesma do site): favicon não herda webfont,
+       então <text> renderizaria com a fonte de fallback de cada sistema. -->
   <rect width="64" height="64" rx="14" fill="#2f6df6"/>
-  <text x="32" y="43" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif"
-        font-size="30" font-weight="800" letter-spacing="-1.5"
-        text-anchor="middle" fill="#ffffff">PG</text>
+  <path fill="#ffffff" d="M26.90 49L18.84 49L18.84 15L32.76 15Q36.60 15 39.38 16.48Q42.17 17.97 43.66 20.61Q45.16 23.26 45.16 26.75Q45.16 30.27 43.63 32.87Q42.10 35.47 39.27 36.93Q36.44 38.39 32.54 38.39L26.90 38.39L26.90 49M26.90 21.53L26.90 32.02L31.08 32.02Q32.97 32.02 34.25 31.36Q35.53 30.70 36.16 29.51Q36.80 28.33 36.80 26.75Q36.80 25.15 36.16 23.98Q35.53 22.80 34.24 22.17Q32.95 21.53 31.05 21.53"/>
 </svg>
