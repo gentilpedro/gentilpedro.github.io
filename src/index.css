@@ -210,25 +210,33 @@ button {
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
+  align-items: baseline;
+  gap: 8px;
   color: var(--text);
   letter-spacing: -0.02em;
   margin-right: auto;
+  white-space: nowrap;
 }
 
-.brand__mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: var(--accent);
-  color: var(--accent-contrast);
-  display: grid;
-  place-items: center;
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
+.brand__title {
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.brand__sep {
+  color: var(--border-strong);
+  font-weight: 400;
+}
+
+.brand__name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.brand:hover .brand__name {
+  color: var(--text);
 }
 
 .nav {
@@ -1230,6 +1238,15 @@ button {
 /* ============================================================
    Responsive
    ============================================================ */
+/* Entre ~760px e 940px o menu ainda é horizontal e disputa espaço com a marca,
+   então o nome sai e fica só "Meu Portfólio". */
+@media (max-width: 940px) {
+  .brand__sep,
+  .brand__name {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .hero__grid {
     grid-template-columns: 1fr;

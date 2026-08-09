@@ -45,8 +45,11 @@ export function Header({ lang, theme, onToggleLang, onToggleTheme }: Props) {
     <header className={`header${scrolled ? ' header--scrolled' : ''}`}>
       <div className="wrap header__inner">
         <a href="#top" className="brand" onClick={() => setOpen(false)}>
-          <span className="brand__mark">PG</span>
-          <span>{profile.shortName}</span>
+          <span className="brand__title">{tr('brandTitle', lang)}</span>
+          <span className="brand__sep" aria-hidden="true">
+            ·
+          </span>
+          <span className="brand__name">{profile.shortName}</span>
         </a>
 
         <nav className={`nav${open ? ' is-open' : ''}`} aria-label="Menu principal">

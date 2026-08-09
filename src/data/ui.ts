@@ -1,6 +1,7 @@
 import type { Lang, Localized } from './profile'
 
 export type UIKey =
+  | 'brandTitle'
   | 'navAbout'
   | 'navSkills'
   | 'navProjects'
@@ -49,6 +50,8 @@ export type UIKey =
   | 'updated'
 
 export const t: Record<UIKey, Localized> = {
+  brandTitle: { pt: 'Meu Portfólio', en: 'My Portfolio' },
+
   navAbout: { pt: 'Sobre', en: 'About' },
   navSkills: { pt: 'Stack', en: 'Stack' },
   navProjects: { pt: 'Projetos', en: 'Projects' },
