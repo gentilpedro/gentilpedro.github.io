@@ -10,6 +10,8 @@ export type UIKey =
   | 'navContact'
   | 'ctaContact'
   | 'ctaCv'
+  | 'ctaWhatsapp'
+  | 'ctaWhatsappShort'
   | 'sectionAbout'
   | 'sectionAboutKicker'
   | 'sectionSkills'
@@ -28,6 +30,8 @@ export type UIKey =
   | 'liveDemo'
   | 'sourceCode'
   | 'privateRepo'
+  | 'downloadApp'
+  | 'downloadAppWindows'
   | 'ghActivity'
   | 'ghActivityLead'
   | 'ghRepos'
@@ -61,6 +65,8 @@ export const t: Record<UIKey, Localized> = {
 
   ctaContact: { pt: 'Fale comigo', en: 'Get in touch' },
   ctaCv: { pt: 'Baixar currículo', en: 'Download résumé' },
+  ctaWhatsapp: { pt: 'Chamar no WhatsApp', en: 'Message on WhatsApp' },
+  ctaWhatsappShort: { pt: 'WhatsApp', en: 'WhatsApp' },
 
   sectionAbout: { pt: 'Sobre mim', en: 'About me' },
   sectionAboutKicker: { pt: 'Quem sou', en: 'Who I am' },
@@ -95,6 +101,8 @@ export const t: Record<UIKey, Localized> = {
   liveDemo: { pt: 'Ver online', en: 'Live demo' },
   sourceCode: { pt: 'Código', en: 'Source' },
   privateRepo: { pt: 'Repositório privado', en: 'Private repository' },
+  downloadApp: { pt: 'Baixar app', en: 'Download app' },
+  downloadAppWindows: { pt: 'Windows · .exe', en: 'Windows · .exe' },
 
   ghActivity: { pt: 'Atividade no GitHub', en: 'GitHub activity' },
   ghActivityLead: {

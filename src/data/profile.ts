@@ -12,6 +12,8 @@ export const profile = {
   altEmail: 'pedro.desenv@gmail.com',
   phone: '+55 53 99125-2555',
   phoneHref: '+5553991252555',
+  /** Número no formato internacional, sem "+" — exigido pela API click-to-chat. */
+  whatsappNumber: '5553991252555',
   whatsapp: 'https://wa.me/5553991252555',
   avatar: 'https://avatars.githubusercontent.com/u/114460216?v=4',
   cv: 'pedro-gentil-cv.pdf',
@@ -25,6 +27,22 @@ export const profile = {
     pt: 'Aberto a novas oportunidades',
     en: 'Open to new opportunities',
   } as Localized,
+}
+
+/** Mensagem que já vem digitada quando alguém abre a conversa. */
+export const whatsappMessage: Localized = {
+  pt: 'Olá, Pedro! Vi seu portfólio e gostaria de conversar sobre uma oportunidade.',
+  en: 'Hi Pedro! I saw your portfolio and I would like to talk about an opportunity.',
+}
+
+/**
+ * Link da API gratuita de click-to-chat do WhatsApp (wa.me).
+ * Não exige conta Business, token nem back-end: abre o app no celular
+ * ou o WhatsApp Web no desktop já com a mensagem preenchida.
+ */
+export function whatsappLink(lang: Lang, message?: string): string {
+  const text = encodeURIComponent(message ?? whatsappMessage[lang])
+  return `https://wa.me/${profile.whatsappNumber}?text=${text}`
 }
 
 export const hero = {
@@ -133,6 +151,10 @@ export type Project = {
   tags: string[]
   live?: string
   repo?: string
+  /** Link direto do executável publicado na última release do GitHub. */
+  download?: string
+  /** `owner/repo` usado para buscar versão e tamanho da última release. */
+  releaseRepo?: string
   featured: boolean
 }
 
@@ -218,6 +240,8 @@ export const projects: Project[] = [
     },
     tags: ['Python', 'Dados', 'Automação'],
     repo: 'https://github.com/gentilpedro/PyInvest',
+    download: 'https://github.com/gentilpedro/PyInvest/releases/latest/download/PyInvest.exe',
+    releaseRepo: 'gentilpedro/PyInvest',
     featured: true,
   },
   {

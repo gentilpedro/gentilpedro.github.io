@@ -1,16 +1,18 @@
 import { Icon } from '../components/Icon'
-import { profile } from '../data/profile'
+import { profile, whatsappLink } from '../data/profile'
 import type { Lang } from '../data/profile'
 import { tr } from '../data/ui'
 
 export function Contact({ lang }: { lang: Lang }) {
+  const wa = whatsappLink(lang)
+
   const cards = [
     { icon: 'mail', label: 'E-mail', value: profile.email, href: `mailto:${profile.email}` },
     {
       icon: 'whatsapp',
       label: 'WhatsApp',
       value: profile.phone,
-      href: profile.whatsapp,
+      href: wa,
       external: true,
     },
     {
@@ -66,6 +68,16 @@ export function Contact({ lang }: { lang: Lang }) {
           <a className="btn btn--primary" href={`mailto:${profile.email}`}>
             <Icon name="mail" size={17} />
             {tr('ctaContact', lang)}
+          </a>
+          <a
+            className="btn btn--whatsapp"
+            href={wa}
+            target="_blank"
+            rel="noreferrer"
+            title={tr('ctaWhatsapp', lang)}
+          >
+            <Icon name="whatsapp" size={17} />
+            {tr('ctaWhatsapp', lang)}
           </a>
           <a className="btn btn--ghost" href={profile.cv} download>
             <Icon name="download" size={17} />

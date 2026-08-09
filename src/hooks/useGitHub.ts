@@ -108,6 +108,82 @@ export function useGitHub(username: string): State {
   return state
 }
 
+export type GhRelease = {
+  /** Versão publicada, ex. `v1.0.10`. */
+  tag: string
+  /** Tamanho do executável já formatado, ex. `70 MB`. */
+  size: string | null
+}
+
+const RELEASE_CACHE_KEY = 'gh-release-cache-v1'
+
+function formatSize(bytes: number): string {
+  const mb = bytes / (1024 * 1024)
+  return mb >= 1 ? `${Math.round(mb)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`
+}
+
+/**
+ * Lê a última release publicada de `owner/repo` para mostrar versão e tamanho
+ * ao lado do botão de download. Falha em silêncio: o botão continua funcionando
+ * porque aponta para `/releases/latest/download/...`, que o GitHub resolve sozinho.
+ */
+export function useLatestRelease(repo: string | undefined): GhRelease | null {
+  const [release, setRelease] = useState<GhRelease | null>(null)
+
+  useEffect(() => {
+    if (!repo) return
+    let alive = true
+
+    const cacheKey = `${RELEASE_CACHE_KEY}:${repo}`
+    try {
+      const raw = localStorage.getItem(cacheKey)
+      if (raw) {
+        const parsed = JSON.parse(raw) as { at: number; release: GhRelease }
+        if (Date.now() - parsed.at <= CACHE_TTL) {
+          setRelease(parsed.release)
+          return
+        }
+      }
+    } catch {
+      /* cache inválido — segue para a rede */
+    }
+
+    const load = async () => {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+        if (!res.ok) throw new Error('GitHub API error')
+
+        const data = (await res.json()) as {
+          tag_name: string
+          assets: { name: string; size: number }[]
+        }
+        const asset = data.assets?.find((a) => /\.(exe|msi|zip|dmg|appimage)$/i.test(a.name))
+        const next: GhRelease = {
+          tag: data.tag_name,
+          size: asset ? formatSize(asset.size) : null,
+        }
+        if (!alive) return
+
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({ at: Date.now(), release: next }))
+        } catch {
+          /* localStorage cheio ou indisponível — segue sem cache */
+        }
+        setRelease(next)
+      } catch {
+        /* sem release ou rate limit — o botão segue com o rótulo padrão */
+      }
+    }
+
+    void load()
+    return () => {
+      alive = false
+    }
+  }, [repo])
+
+  return release
+}
+
 /** Cores oficiais do GitHub Linguist para as linguagens que aparecem no perfil. */
 export const langColor: Record<string, string> = {
   'C#': '#178600',

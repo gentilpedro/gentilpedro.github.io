@@ -1,9 +1,11 @@
 import { Icon } from '../components/Icon'
-import { hero, profile, stats } from '../data/profile'
+import { hero, profile, stats, whatsappLink } from '../data/profile'
 import type { Lang } from '../data/profile'
 import { tr } from '../data/ui'
 
 export function Hero({ lang }: { lang: Lang }) {
+  const wa = whatsappLink(lang)
+
   return (
     <section className="hero" id="top">
       <div className="wrap">
@@ -48,6 +50,16 @@ export function Hero({ lang }: { lang: Lang }) {
                 <Icon name="mail" size={17} />
                 {tr('ctaContact', lang)}
               </a>
+              <a
+                className="btn btn--whatsapp"
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                title={tr('ctaWhatsapp', lang)}
+              >
+                <Icon name="whatsapp" size={17} />
+                {tr('ctaWhatsappShort', lang)}
+              </a>
               <a className="btn btn--ghost" href={profile.cv} download>
                 <Icon name="download" size={17} />
                 {tr('ctaCv', lang)}
@@ -76,7 +88,7 @@ export function Hero({ lang }: { lang: Lang }) {
                 </a>
                 <a
                   className="icon-btn"
-                  href={profile.whatsapp}
+                  href={wa}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="WhatsApp"

@@ -1,8 +1,8 @@
 import { Icon } from '../components/Icon'
 import { profile, projects } from '../data/profile'
-import type { Lang } from '../data/profile'
+import type { Lang, Project } from '../data/profile'
 import { tr } from '../data/ui'
-import { langColor, useGitHub } from '../hooks/useGitHub'
+import { langColor, useGitHub, useLatestRelease } from '../hooks/useGitHub'
 
 function formatDate(iso: string, lang: Lang) {
   return new Date(iso).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
@@ -10,6 +10,27 @@ function formatDate(iso: string, lang: Lang) {
     month: 'short',
     year: 'numeric',
   })
+}
+
+/** Botão de download do executável, com versão e tamanho da última release. */
+function DownloadButton({ project, lang }: { project: Project; lang: Lang }) {
+  const release = useLatestRelease(project.releaseRepo)
+  const meta = release
+    ? [release.tag, release.size].filter(Boolean).join(' · ')
+    : tr('downloadAppWindows', lang)
+
+  return (
+    <a
+      className="btn btn--primary btn--sm"
+      href={project.download}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <Icon name="download" size={15} />
+      {tr('downloadApp', lang)}
+      <span className="btn__meta">{meta}</span>
+    </a>
+  )
 }
 
 function GitHubPanel({ lang }: { lang: Lang }) {
@@ -166,6 +187,7 @@ export function Projects({ lang }: { lang: Lang }) {
                       {tr('liveDemo', lang)}
                     </a>
                   )}
+                  {p.download && <DownloadButton project={p} lang={lang} />}
                   {p.repo && (
                     <a
                       className="btn btn--ghost btn--sm"
