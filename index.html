@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1016" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+    <title>Pedro Gentil — Desenvolvedor Full Stack .NET</title>
+    <meta
+      name="description"
+      content="Pedro Gentil — Desenvolvedor Full Stack especializado em .NET, C#, ASP.NET Core, React e DevOps. Portfólio com projetos, experiência profissional e currículo."
+    />
+    <meta
+      name="keywords"
+      content="Pedro Gentil, desenvolvedor full stack, .NET, C#, ASP.NET Core, React, TypeScript, DevOps, Docker, Ansible, Pelotas, RS"
+    />
+    <meta name="author" content="Pedro Gentil Roodes Rodrigues" />
+    <link rel="canonical" href="https://gentilpedro.github.io/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://gentilpedro.github.io/" />
+    <meta property="og:title" content="Pedro Gentil — Desenvolvedor Full Stack .NET" />
+    <meta
+      property="og:description"
+      content="Full Stack focado em .NET e C#. Sistemas corporativos usados diariamente por mais de 2.000 pessoas. Veja projetos, stack e experiência."
+    />
+    <meta
+      property="og:image"
+      content="https://avatars.githubusercontent.com/u/114460216?v=4&s=460"
+    />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="profile:first_name" content="Pedro" />
+    <meta property="profile:last_name" content="Gentil" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pedro Gentil — Desenvolvedor Full Stack .NET" />
+    <meta
+      name="twitter:description"
+      content="Full Stack focado em .NET e C#. Projetos, stack e experiência profissional."
+    />
+    <meta
+      name="twitter:image"
+      content="https://avatars.githubusercontent.com/u/114460216?v=4&s=460"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="https://avatars.githubusercontent.com/u/114460216?v=4&s=180" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://api.github.com" />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+
+    <!-- Dados estruturados para buscadores -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Pedro Gentil Roodes Rodrigues",
+        "alternateName": "Pedro Gentil",
+        "url": "https://gentilpedro.github.io/",
+        "image": "https://avatars.githubusercontent.com/u/114460216?v=4",
+        "jobTitle": "Desenvolvedor Full Stack .NET",
+        "email": "mailto:pedro.desev@outlook.com",
+        "telephone": "+5553991252555",
+        "worksFor": { "@type": "Organization", "name": "Josapar" },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Pelotas",
+          "addressRegion": "RS",
+          "addressCountry": "BR"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Universidade de Tecnologia SENAC"
+        },
+        "knowsAbout": [
+          "C#",
+          "ASP.NET Core",
+          ".NET",
+          "Java",
+          "React",
+          "TypeScript",
+          "Docker",
+          "Ansible",
+          "PostgreSQL",
+          "Oracle",
+          "DevOps"
+        ],
+        "sameAs": [
+          "https://github.com/gentilpedro",
+          "https://linkedin.com/in/pedro-gentil"
+        ]
+      }
+    </script>
+
+    <!-- Evita o flash de tema errado antes do React montar -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme')
+          var theme =
+            saved === 'light' || saved === 'dark'
+              ? saved
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+          document.documentElement.dataset.theme = theme
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
