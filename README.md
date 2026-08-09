@@ -16,18 +16,26 @@ Complementa o currículo com projetos, stack, experiência e contato, em **portu
 
 ## Stack
 
-React 19 · TypeScript · Vite · CSS puro com design tokens · GitHub Actions · GitHub Pages
+Construído sobre o [`template-react-vite`](../template-react-vite):
 
-Sem framework de UI e sem dependências de runtime além do React — o bundle final fica em torno de 74 kB gzip.
+- Vite + React 19 + TypeScript
+- React Router (`react-router-dom`) com layout e rota 404
+- Tailwind CSS v4 via `@tailwindcss/postcss` (sem `tailwind.config.js`; tema em `src/index.css` com `@theme`)
+- `lucide-react` para ícones
+- ESLint (flat config) com `typescript-eslint`, `eslint-plugin-react-hooks` e `eslint-plugin-react-refresh`
+- Deploy por GitHub Actions no GitHub Pages
+
+O tema claro/escuro é alternado por `data-theme` no `<html>`, então os tokens de cor do `@theme` são redefinidos em `:root[data-theme="dark"]` e todas as utilitárias acompanham a troca.
 
 ## Rodando localmente
 
 ```bash
 npm install
-npm run dev      # servidor de desenvolvimento
+cp .env.example .env
+npm run dev      # servidor de desenvolvimento em http://localhost:3000
 npm run build    # build de produção em dist/
 npm run preview  # serve o build de produção
-npm run lint     # análise estática
+npm run lint     # ESLint
 ```
 
 ## Estrutura
@@ -35,21 +43,31 @@ npm run lint     # análise estática
 ```
 src/
 ├── data/
-│   ├── profile.ts    # currículo: bio, experiências, projetos, cursos, skills
-│   └── ui.ts         # strings da interface (PT/EN)
+│   ├── profile.ts     # currículo: bio, experiências, projetos, cursos, skills
+│   └── ui.ts          # strings da interface (PT/EN)
+├── services/
+│   └── github.ts      # client da API do GitHub + cache em localStorage
 ├── hooks/
-│   ├── useGitHub.ts  # API do GitHub + cache em localStorage
-│   └── useReveal.ts  # animação de entrada e seção ativa no menu
-├── components/       # Header, Icon
-├── sections/         # Hero, About, Skills, Projects, Experience, Education, Contact
-└── index.css         # design tokens e estilos
+│   ├── useGitHub.ts   # hooks React sobre o service
+│   ├── useLang.ts     # idioma vindo do contexto do Outlet
+│   └── useReveal.ts   # animação de entrada e seção ativa no menu
+├── components/        # Layout, Header, BrandIcon, ui (Button, Card, Section, Tag…)
+├── pages/             # Home, NotFound
+├── sections/          # Hero, About, Skills, Projects, Experience, Education, Contact
+├── App.tsx            # definição de rotas
+├── main.tsx           # bootstrap
+└── index.css          # import do Tailwind + tema (@theme)
 ```
 
 Para atualizar o conteúdo do site, basta editar `src/data/profile.ts` — nenhuma seção tem texto escrito direto no componente.
 
+O `lucide-react` v1 não traz mais ícones de marca, então GitHub, LinkedIn e WhatsApp ficam em `components/BrandIcon.tsx`; todo o resto vem do lucide.
+
 ## Deploy
 
 Todo push na branch `main` dispara o workflow `.github/workflows/deploy.yml`, que roda lint, build e publica no GitHub Pages.
+
+O build também grava um `dist/404.html` idêntico ao `index.html`: como o GitHub Pages serve esse arquivo para qualquer caminho desconhecido, o app carrega e o react-router resolve a rota.
 
 ## Contato
 
