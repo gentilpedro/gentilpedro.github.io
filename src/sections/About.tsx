@@ -1,3 +1,4 @@
+import { Card, CardTitle, Section, SectionHead } from '../components/ui'
 import { about, languages, profile } from '../data/profile'
 import type { Lang } from '../data/profile'
 import { tr } from '../data/ui'
@@ -18,59 +19,64 @@ export function About({ lang }: { lang: Lang }) {
   ]
 
   return (
-    <section className="section" id="sobre">
-      <div className="wrap">
-        <div className="section__head reveal">
-          <span className="kicker">{tr('sectionAboutKicker', lang)}</span>
-          <h2 className="section__title">{tr('sectionAbout', lang)}</h2>
+    <Section id="sobre">
+      <SectionHead kicker={tr('sectionAboutKicker', lang)} title={tr('sectionAbout', lang)} />
+
+      <div className="grid grid-cols-[1.4fr_1fr] items-start gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-8">
+        <div className="reveal [&_em]:text-accent [&_em]:not-italic [&_strong]:font-semibold [&_strong]:text-fg">
+          {about.map((p, i) => (
+            <p
+              key={i}
+              className="mb-[18px] text-[1.02rem] text-muted"
+              dangerouslySetInnerHTML={{ __html: p[lang] }}
+            />
+          ))}
         </div>
 
-        <div className="about__grid">
-          <div className="about__text reveal">
-            {about.map((p, i) => (
-              <p key={i} dangerouslySetInnerHTML={{ __html: p[lang] }} />
-            ))}
-          </div>
+        <div className="reveal">
+          <Card className="mb-[18px]">
+            <CardTitle>{lang === 'pt' ? 'Resumo' : 'At a glance'}</CardTitle>
+            <dl>
+              {facts.map((f) => (
+                <div
+                  key={f.dt}
+                  className="flex justify-between gap-4 border-b border-dashed border-line py-[11px] text-[0.93rem] last:border-b-0"
+                >
+                  <dt className="text-muted">{f.dt}</dt>
+                  <dd className="text-right font-semibold">{f.dd}</dd>
+                </div>
+              ))}
+            </dl>
+          </Card>
 
-          <div className="reveal">
-            <div className="card" style={{ marginBottom: 18 }}>
-              <div className="card__title">{lang === 'pt' ? 'Resumo' : 'At a glance'}</div>
-              <dl className="factlist">
-                {facts.map((f) => (
-                  <li key={f.dt}>
-                    <dt>{f.dt}</dt>
-                    <dd>{f.dd}</dd>
-                  </li>
-                ))}
-              </dl>
-            </div>
-
-            <div className="card">
-              <div className="card__title">{tr('languages', lang)}</div>
-              <div className="langbar">
-                {languages.map((l) => (
-                  <div className="langbar__row" key={l.name.en}>
-                    <div className="langbar__head">
-                      <strong>{l.name[lang]}</strong>
-                      <span className="langbar__level">{l.level[lang]}</span>
-                    </div>
-                    <div
-                      className="langbar__track"
-                      role="progressbar"
-                      aria-valuenow={l.pct}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={l.name[lang]}
-                    >
-                      <div className="langbar__fill" style={{ width: `${l.pct}%` }} />
-                    </div>
+          <Card>
+            <CardTitle>{tr('languages', lang)}</CardTitle>
+            <div className="mt-2">
+              {languages.map((l) => (
+                <div key={l.name.en} className="mb-4 last:mb-0">
+                  <div className="mb-[7px] flex items-baseline justify-between gap-3 text-[0.9rem]">
+                    <strong>{l.name[lang]}</strong>
+                    <span className="text-[0.82rem] text-faint">{l.level[lang]}</span>
                   </div>
-                ))}
-              </div>
+                  <div
+                    role="progressbar"
+                    aria-valuenow={l.pct}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-label={l.name[lang]}
+                    className="h-1.5 overflow-hidden rounded-full bg-inset"
+                  >
+                    <div
+                      className="h-full rounded-full bg-accent transition-[width] duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                      style={{ width: `${l.pct}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+          </Card>
         </div>
       </div>
-    </section>
+    </Section>
   )
 }
