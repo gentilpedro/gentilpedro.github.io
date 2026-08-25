@@ -29,7 +29,6 @@ export type UIKey =
   | 'sectionContactLead'
   | 'liveDemo'
   | 'sourceCode'
-  | 'privateRepo'
   | 'downloadApp'
   | 'downloadAppWindows'
   | 'ghActivity'
@@ -41,6 +40,8 @@ export type UIKey =
   | 'ghLatest'
   | 'ghError'
   | 'ghProfile'
+  | 'noDescription'
+  | 'projectsLoading'
   | 'courses'
   | 'languages'
   | 'current'
@@ -100,7 +101,6 @@ export const t: Record<UIKey, Localized> = {
 
   liveDemo: { pt: 'Ver online', en: 'Live demo' },
   sourceCode: { pt: 'Código', en: 'Source' },
-  privateRepo: { pt: 'Repositório privado', en: 'Private repository' },
   downloadApp: { pt: 'Baixar app', en: 'Download app' },
   downloadAppWindows: { pt: 'Windows · .exe', en: 'Windows · .exe' },
 
@@ -119,6 +119,8 @@ export const t: Record<UIKey, Localized> = {
     en: 'Could not load GitHub data right now. Visit the profile directly:',
   },
   ghProfile: { pt: 'Ver perfil completo no GitHub', en: 'View full GitHub profile' },
+  noDescription: { pt: 'Sem descrição no repositório.', en: 'No description on the repository.' },
+  projectsLoading: { pt: 'Carregando projetos do GitHub…', en: 'Loading projects from GitHub…' },
 
   courses: { pt: 'Cursos e certificações', en: 'Courses & certifications' },
   languages: { pt: 'Idiomas', en: 'Languages' },

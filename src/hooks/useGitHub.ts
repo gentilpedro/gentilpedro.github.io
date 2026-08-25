@@ -11,7 +11,9 @@ export type GhRepo = {
   name: string
   description: string | null
   html_url: string
+  homepage: string | null
   language: string | null
+  topics?: string[]
   stargazers_count: number
   updated_at: string
   fork: boolean
@@ -20,6 +22,8 @@ export type GhRepo = {
 type State = {
   user: GhUser | null
   repos: GhRepo[]
+  /** Repositórios próprios com pelo menos 1 estrela — viram os cards de "Projetos em destaque". */
+  featured: GhRepo[]
   stars: number
   loading: boolean
   error: boolean
@@ -51,6 +55,7 @@ export function useGitHub(username: string): State {
   const [state, setState] = useState<State>({
     user: null,
     repos: [],
+    featured: [],
     stars: 0,
     loading: true,
     error: false,
@@ -61,9 +66,17 @@ export function useGitHub(username: string): State {
 
     const apply = (user: GhUser, repos: GhRepo[]) => {
       const own = repos.filter((r) => !r.fork)
+      const featured = own
+        .filter((r) => r.stargazers_count > 0)
+        .sort(
+          (a, b) =>
+            b.stargazers_count - a.stargazers_count ||
+            new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+        )
       setState({
         user,
         repos: own.slice(0, 6),
+        featured,
         stars: own.reduce((sum, r) => sum + r.stargazers_count, 0),
         loading: false,
         error: false,
@@ -113,6 +126,8 @@ export type GhRelease = {
   tag: string
   /** Tamanho do executável já formatado, ex. `70 MB`. */
   size: string | null
+  /** URL direta do instalador/executável anexado à release, se houver. */
+  downloadUrl: string | null
 }
 
 const RELEASE_CACHE_KEY = 'gh-release-cache-v1'
@@ -155,12 +170,13 @@ export function useLatestRelease(repo: string | undefined): GhRelease | null {
 
         const data = (await res.json()) as {
           tag_name: string
-          assets: { name: string; size: number }[]
+          assets: { name: string; size: number; browser_download_url: string }[]
         }
         const asset = data.assets?.find((a) => /\.(exe|msi|zip|dmg|appimage)$/i.test(a.name))
         const next: GhRelease = {
           tag: data.tag_name,
           size: asset ? formatSize(asset.size) : null,
+          downloadUrl: asset?.browser_download_url ?? null,
         }
         if (!alive) return
 
