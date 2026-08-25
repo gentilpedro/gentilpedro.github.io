@@ -202,6 +202,19 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    name: 'Infraestrutura Ansible',
+    summary: {
+      pt: 'Automação completa da infraestrutura corporativa',
+      en: 'Full corporate infrastructure automation',
+    },
+    detail: {
+      pt: 'Playbooks Ansible que provisionam e configuram toda a stack interna da empresa: ELK (Elasticsearch, Logstash e Kibana), Nginx como proxy reverso, SonarQube, PostgreSQL, OpenBao para gestão de segredos, Semaphore para orquestrar as automações e servidores IIS. Repositório privado por conter configurações do ambiente de produção.',
+      en: 'Ansible playbooks that provision and configure the company entire internal stack: the ELK stack (Elasticsearch, Logstash, Kibana), Nginx as a reverse proxy, SonarQube, PostgreSQL, OpenBao for secrets management, Semaphore to orchestrate automation runs, and IIS servers. Kept private because it holds production environment configuration.',
+    },
+    tags: ['Ansible', 'OpenBao', 'Semaphore', 'ELK', 'Nginx', 'IIS'],
+    featured: true,
+  },
+  {
     name: 'Beep',
     summary: {
       pt: 'Acessibilidade sonora para pessoas com perda auditiva',
@@ -256,6 +269,21 @@ export const projects: Project[] = [
     },
     tags: ['Flutter', 'Dart', 'C#', 'REST API'],
     repo: 'https://github.com/gentilpedro/Representantes',
+    featured: true,
+  },
+  {
+    name: 'Agenda de Clientes',
+    summary: {
+      pt: 'Cadastro de clientes e agendamento de horários',
+      en: 'Client registration and appointment scheduling',
+    },
+    detail: {
+      pt: 'Sistema full stack para cadastrar clientes e organizar horários de atendimento em uma agenda. API em Java cuida da persistência dos dados, com front-end em TypeScript para gerenciar e marcar os compromissos.',
+      en: 'Full stack system to register clients and organize appointment schedules. A Java API handles data persistence, paired with a TypeScript front end for managing and booking appointments.',
+    },
+    tags: ['Java', 'TypeScript', 'REST API', 'Agendamento'],
+    live: 'https://agendaclientes.vercel.app/',
+    repo: 'https://github.com/gentilpedro/agenda-clientes-api',
     featured: true,
   },
   {
