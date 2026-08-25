@@ -1,8 +1,8 @@
 import { Icon } from '../components/Icon'
-import { profile } from '../data/profile'
-import type { Lang } from '../data/profile'
+import { profile, projects } from '../data/profile'
+import type { Lang, Project } from '../data/profile'
 import { tr } from '../data/ui'
-import { langColor, useGitHub, useLatestRelease, type GhRepo } from '../hooks/useGitHub'
+import { langColor, useGitHub, useLatestRelease } from '../hooks/useGitHub'
 
 function formatDate(iso: string, lang: Lang) {
   return new Date(iso).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', {
@@ -12,81 +12,24 @@ function formatDate(iso: string, lang: Lang) {
   })
 }
 
-/** `Ansible_lab` -> `Ansible lab` — deixa o nome do repositório mais legível no card. */
-function formatRepoName(name: string) {
-  return name.replace(/[-_]+/g, ' ')
-}
-
-/** Botão de download, só aparece quando a última release do repo tem um instalador anexado. */
-function DownloadButton({ repo, lang }: { repo: string; lang: Lang }) {
-  const release = useLatestRelease(repo)
-  if (!release?.downloadUrl) return null
-
-  const meta = [release.tag, release.size].filter(Boolean).join(' · ')
+/** Botão de download do executável, com versão e tamanho da última release. */
+function DownloadButton({ project, lang }: { project: Project; lang: Lang }) {
+  const release = useLatestRelease(project.releaseRepo)
+  const meta = release
+    ? [release.tag, release.size].filter(Boolean).join(' · ')
+    : tr('downloadAppWindows', lang)
 
   return (
-    <a className="btn btn--primary btn--sm" href={release.downloadUrl} target="_blank" rel="noreferrer">
+    <a
+      className="btn btn--primary btn--sm"
+      href={project.download}
+      target="_blank"
+      rel="noreferrer"
+    >
       <Icon name="download" size={15} />
       {tr('downloadApp', lang)}
       <span className="btn__meta">{meta}</span>
     </a>
-  )
-}
-
-function ProjectCard({ repo, lang }: { repo: GhRepo; lang: Lang }) {
-  const tags = (repo.topics?.length ? repo.topics : repo.language ? [repo.language] : []).slice(0, 6)
-
-  return (
-    <article className="project reveal">
-      <div className="project__head">
-        <h3 className="project__name">{formatRepoName(repo.name)}</h3>
-        {repo.homepage && (
-          <span className="project__live-dot">
-            <span className="badge__dot" />
-            Live
-          </span>
-        )}
-      </div>
-
-      <p className="project__summary">
-        {repo.language && (
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginRight: 12 }}>
-            <span className="dot" style={{ background: langColor[repo.language] ?? '#8b95a3' }} />
-            {repo.language}
-          </span>
-        )}
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <Icon name="star" size={13} />
-          {repo.stargazers_count}
-        </span>
-      </p>
-
-      <p className="project__detail">{repo.description ?? tr('noDescription', lang)}</p>
-
-      {tags.length > 0 && (
-        <ul className="tags project__tags">
-          {tags.map((tag) => (
-            <li className="tag" key={tag}>
-              {tag}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="project__links">
-        {repo.homepage && (
-          <a className="btn btn--primary btn--sm" href={repo.homepage} target="_blank" rel="noreferrer">
-            <Icon name="external" size={15} />
-            {tr('liveDemo', lang)}
-          </a>
-        )}
-        <DownloadButton repo={`${profile.github}/${repo.name}`} lang={lang} />
-        <a className="btn btn--ghost btn--sm" href={repo.html_url} target="_blank" rel="noreferrer">
-          <Icon name="github" size={15} />
-          {tr('sourceCode', lang)}
-        </a>
-      </div>
-    </article>
   )
 }
 
@@ -198,8 +141,6 @@ function GitHubPanel({ lang }: { lang: Lang }) {
 }
 
 export function Projects({ lang }: { lang: Lang }) {
-  const { featured, loading, error } = useGitHub(profile.github)
-
   return (
     <section className="section" id="projetos">
       <div className="wrap">
@@ -209,30 +150,65 @@ export function Projects({ lang }: { lang: Lang }) {
           <p className="section__lead">{tr('sectionProjectsLead', lang)}</p>
         </div>
 
-        {loading && (
-          <div className="projects__grid">
-            {[0, 1, 2].map((i) => (
-              <div className="project gh__skeleton" key={i} style={{ minHeight: 220 }} />
-            ))}
-          </div>
-        )}
+        <div className="projects__grid">
+          {projects
+            .filter((p) => p.featured)
+            .map((p) => (
+              <article className="project reveal" key={p.name}>
+                <div className="project__head">
+                  <h3 className="project__name">{p.name}</h3>
+                  {p.live && (
+                    <span className="project__live-dot">
+                      <span className="badge__dot" />
+                      Live
+                    </span>
+                  )}
+                </div>
+                <p className="project__summary">{p.summary[lang]}</p>
+                <p className="project__detail">{p.detail[lang]}</p>
 
-        {error && !loading && (
-          <p className="gh__error">
-            {tr('ghError', lang)}{' '}
-            <a href={profile.githubUrl} target="_blank" rel="noreferrer">
-              {tr('ghProfile', lang)}
-            </a>
-          </p>
-        )}
+                <ul className="tags project__tags">
+                  {p.tags.map((tag) => (
+                    <li className="tag" key={tag}>
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
 
-        {!loading && !error && (
-          <div className="projects__grid">
-            {featured.map((repo) => (
-              <ProjectCard repo={repo} lang={lang} key={repo.id} />
+                <div className="project__links">
+                  {p.live && (
+                    <a
+                      className="btn btn--primary btn--sm"
+                      href={p.live}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Icon name="external" size={15} />
+                      {tr('liveDemo', lang)}
+                    </a>
+                  )}
+                  {p.download && <DownloadButton project={p} lang={lang} />}
+                  {p.repo && (
+                    <a
+                      className="btn btn--ghost btn--sm"
+                      href={p.repo}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Icon name="github" size={15} />
+                      {tr('sourceCode', lang)}
+                    </a>
+                  )}
+                  {!p.repo && (
+                    <span className="project__private">
+                      <Icon name="lock" size={14} />
+                      {tr('privateRepo', lang)}
+                    </span>
+                  )}
+                </div>
+              </article>
             ))}
-          </div>
-        )}
+        </div>
 
         <GitHubPanel lang={lang} />
       </div>
